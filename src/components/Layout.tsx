@@ -142,8 +142,8 @@ export default function Layout() {
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-32 bg-red-600/10 blur-[100px] pointer-events-none"></div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-            <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+            <div className="lg:col-span-1">
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-red-600 text-white p-1.5 rounded-md shadow-[0_0_10px_rgba(220,38,38,0.5)]">
                   <Recycle className="h-5 w-5" />
@@ -154,6 +154,7 @@ export default function Layout() {
                 Premium garage cleanout and specialized item recovery services. We pull no stops in reclaiming your space.
               </p>
             </div>
+            
             <div>
               <h3 className="text-sm font-bold text-white tracking-widest uppercase mb-6 flex items-center gap-2">
                 <span className="w-8 h-px bg-red-600"></span> Contact
@@ -171,14 +172,18 @@ export default function Layout() {
                   </div>
                   <span className="text-zinc-300 font-medium">service@garagerecovery.com</span>
                 </li>
-                <li className="flex items-center gap-3 group">
-                  <div className="p-2 bg-white/5 rounded-md group-hover:bg-red-600/20 group-hover:text-red-500 transition-colors">
+                <li className="flex items-center gap-3 group items-start">
+                  <div className="p-2 bg-white/5 rounded-md group-hover:bg-red-600/20 group-hover:text-red-500 transition-colors mt-1">
                     <MapPin className="h-4 w-4 text-zinc-400 group-hover:text-red-500" />
                   </div>
-                  <span className="text-zinc-300 font-medium">Serving the Greater Metro Area</span>
+                  <div className="flex flex-col">
+                    <span className="text-zinc-300 font-medium">Service Area:</span>
+                    <span className="text-zinc-500 text-xs mt-1">Temple, TX to South Austin</span>
+                  </div>
                 </li>
               </ul>
             </div>
+            
             <div>
               <h3 className="text-sm font-bold text-white tracking-widest uppercase mb-6 flex items-center gap-2">
                 <span className="w-8 h-px bg-red-600"></span> Quick Links
@@ -189,6 +194,25 @@ export default function Layout() {
                 <li><Link to="/contact" className="text-zinc-400 hover:text-red-500 transition-colors flex items-center gap-2"><span className="text-red-600 opacity-0 -ml-4 transition-all group-hover:opacity-100 group-hover:ml-0">›</span> Schedule Recovery</Link></li>
                 <li><Link to="/privacy" className="text-zinc-400 hover:text-red-500 transition-colors flex items-center gap-2"><span className="text-red-600 opacity-0 -ml-4 transition-all group-hover:opacity-100 group-hover:ml-0">›</span> Privacy Policy</Link></li>
               </ul>
+            </div>
+
+            {/* Coverage Map */}
+            <div className="lg:col-span-1 h-full min-h-[200px] flex flex-col">
+              <h3 className="text-sm font-bold text-white tracking-widest uppercase mb-6 flex items-center gap-2">
+                <span className="w-8 h-px bg-red-600"></span> Coverage Area
+              </h3>
+              <div className="relative flex-grow rounded-lg overflow-hidden border border-white/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] group">
+                <div className="absolute inset-0 border-2 border-transparent group-hover:border-red-500/50 transition-colors z-10 pointer-events-none rounded-lg"></div>
+                <iframe 
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d515102.75330831617!2d-97.5878235!3d30.64831!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1710000000000!5m2!1sen!2sus&style=feature:all|element:labels.text.fill|color:0x8ec3b9&style=feature:all|element:labels.text.stroke|color:0x1a3646&style=feature:landscape|element:geometry|color:0x09090b&style=feature:poi|element:geometry|color:0x1c1c1c&style=feature:road|element:geometry|color:0x2c2c2c&style=feature:transit|element:geometry|color:0x2c2c2c&style=feature:water|element:geometry|color:0x0f0f0f"
+                  className="absolute inset-0 w-full h-full filter grayscale-[50%] contrast-125 hover:grayscale-0 transition-all duration-500"
+                  style={{ border: 0 }}
+                  allowFullScreen={false}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Service Area: Temple to South Austin"
+                ></iframe>
+              </div>
             </div>
           </div>
           <div className="pt-8 border-t border-white/10 text-xs font-medium text-zinc-500 flex flex-col md:flex-row justify-between items-center uppercase tracking-wider">

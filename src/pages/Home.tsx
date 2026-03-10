@@ -1,8 +1,25 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, CheckCircle2, Recycle, ShieldCheck, Clock, ChevronRight } from 'lucide-react';
 
 export default function Home() {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  const heroImages = [
+    '/images/garage_corvette.png',
+    '/images/garage_gym.png',
+    '/images/garage_bikes_climbing.png',
+    '/images/garage_motorcycle_workshop.png',
+    '/images/garage_music_studio.png'
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -21,16 +38,18 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img
-            src="https://picsum.photos/seed/industrial-clean/1920/1080?blur=1"
-            alt="Pristine empty garage"
-            className="w-full h-full object-cover opacity-30 mix-blend-luminosity"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-zinc-950/90 to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
-          {/* Red dramatic glow */}
-          <div className="absolute top-1/4 -left-64 w-96 h-96 bg-red-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+          <AnimatePresence mode="popLayout">
+            <motion.img
+              key={currentImageIndex}
+              src={heroImages[currentImageIndex]}
+              alt="Garage man cave designs"
+              className="absolute inset-0 w-full h-full object-cover opacity-80"
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 0.8, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+            />
+          </AnimatePresence>
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
@@ -40,19 +59,14 @@ export default function Home() {
             animate="visible"
             variants={containerVariants}
           >
-            <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
-              <span className="h-px w-12 bg-red-600"></span>
-              <span className="text-red-500 font-bold tracking-[0.2em] uppercase text-sm">Premium Service</span>
-            </motion.div>
-            
-            <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-black tracking-tighter mb-6 leading-[1.1] text-white uppercase">
+            <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-black tracking-tighter mb-6 leading-[1.1] text-white uppercase mt-12">
               Reclaim Your Garage.<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">
                 Maximize Your Space.
               </span>
             </motion.h1>
             
-            <motion.p variants={itemVariants} className="text-lg md:text-xl text-zinc-400 mb-10 max-w-2xl leading-relaxed font-medium">
+            <motion.p variants={itemVariants} className="text-lg md:text-xl text-white mb-10 max-w-2xl leading-relaxed font-medium bg-black/60 backdrop-blur-md p-5 rounded-lg border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
               Your Garage is more than a storage shed. Let us help you unlock its potential.
             </motion.p>
             
