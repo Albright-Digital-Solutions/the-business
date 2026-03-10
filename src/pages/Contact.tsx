@@ -123,7 +123,7 @@ export default function Contact() {
                         id="phone"
                         required
                         className="w-full px-5 py-4 bg-zinc-900/50 border border-white/10 text-white focus:ring-1 focus:ring-red-500 focus:border-red-500 outline-none transition-all placeholder-zinc-700"
-                        placeholder="(555) 123-4567"
+                        placeholder="512-814-8825"
                       />
                     </div>
                   </div>

@@ -164,13 +164,13 @@ export default function Layout() {
                   <div className="p-2 bg-white/5 rounded-md group-hover:bg-red-600/20 group-hover:text-red-500 transition-colors">
                     <Phone className="h-4 w-4 text-zinc-400 group-hover:text-red-500" />
                   </div>
-                  <span className="text-zinc-300 font-medium">(555) 123-4567</span>
+                  <span className="text-zinc-300 font-medium">512-814-8825</span>
                 </li>
                 <li className="flex items-center gap-3 group">
                   <div className="p-2 bg-white/5 rounded-md group-hover:bg-red-600/20 group-hover:text-red-500 transition-colors">
                     <Mail className="h-4 w-4 text-zinc-400 group-hover:text-red-500" />
                   </div>
-                  <span className="text-zinc-300 font-medium">service@garagerecovery.com</span>
+                  <span className="text-zinc-300 font-medium">garagerecoverysolutions@gmail.com</span>
                 </li>
                 <li className="flex items-center gap-3 group items-start">
                   <div className="p-2 bg-white/5 rounded-md group-hover:bg-red-600/20 group-hover:text-red-500 transition-colors mt-1">
