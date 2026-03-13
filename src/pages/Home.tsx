@@ -207,10 +207,9 @@ export default function Home() {
               <div className="aspect-[4/5] md:aspect-square rounded-none overflow-hidden border border-white/10 relative group">
                 <div className="absolute inset-0 bg-red-600/20 mix-blend-overlay z-10 group-hover:bg-transparent transition-colors duration-500"></div>
                 <img 
-                  src="https://picsum.photos/seed/professional-team-dark/800/1000?grayscale" 
+                  src="/images/mcj1.png" 
                   alt="Professional Garage Recovery Team" 
                   className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-700"
-                  referrerPolicy="no-referrer"
                 />
                 
                 {/* Overlay Badge */}
