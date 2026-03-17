@@ -211,17 +211,17 @@ export default function ReserveConfirmation() {
                       </div>
                   </div>
 
-                  {/* Step 2: Payment Mockup */}
+                  {/* Step 2: Secure Payment */}
                   <div className="pt-6 border-t border-white/10">
                       <h3 className="font-bold text-white mb-6 uppercase tracking-wider text-sm flex items-center">
                           <span className="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center text-xs mr-3">2</span>
-                          Payment Method (Mockup)
+                          Secure Payment
                       </h3>
 
-                      <div className="bg-zinc-900/40 border border-white/10 p-6 flex flex-col items-center justify-center border-dashed">
-                           <CreditCard className="w-10 h-10 text-zinc-600 mb-4" />
-                           <p className="text-zinc-400 font-bold uppercase tracking-widest text-sm text-center mb-2">Secure Payment Integration Goes Here</p>
-                           <p className="text-xs text-zinc-500 text-center">In production, this would be replaced by Stripe Elements or equivalent.</p>
+                      <div className="bg-zinc-900/40 border border-white/10 p-6 flex flex-col items-center justify-center">
+                           <CreditCard className="w-10 h-10 text-emerald-500 mb-4" />
+                           <p className="text-white font-bold uppercase tracking-widest text-sm text-center mb-2">Powered by Stripe</p>
+                           <p className="text-xs text-zinc-400 text-center">You'll be redirected to Stripe's secure checkout to complete your $100 deposit. No card information is stored on our servers.</p>
                       </div>
                   </div>
 
