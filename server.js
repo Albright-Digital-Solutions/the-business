@@ -21,11 +21,18 @@ const port = 3001;
 app.use(express.json());
 
 // Initialize SQLite Database
-const dbDir = resolve(__dirname, 'data');
-if (!fs.existsSync(dbDir)) {
-  fs.mkdirSync(dbDir);
+let dbPath;
+if (process.env.VERCEL) {
+  // Vercel serverless functions have a read-only filesystem except for /tmp
+  dbPath = '/tmp/database.sqlite';
+} else {
+  const dbDir = resolve(__dirname, 'data');
+  if (!fs.existsSync(dbDir)) {
+    fs.mkdirSync(dbDir);
+  }
+  dbPath = resolve(dbDir, 'database.sqlite');
 }
-const db = new Database(resolve(dbDir, 'database.sqlite'), { verbose: console.log });
+const db = new Database(dbPath, { verbose: console.log });
 db.pragma('journal_mode = WAL');
 
 // Setup Schema
@@ -162,6 +169,10 @@ app.post('/api/reserve', async (req, res) => {
 });
 
 // Start server
-app.listen(port, () => {
-  console.log(`Backend API running at http://localhost:${port}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(port, () => {
+    console.log(`Backend API running at http://localhost:${port}`);
+  });
+}
+
+export default app;
