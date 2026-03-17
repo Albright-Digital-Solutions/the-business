@@ -178,7 +178,7 @@ export default function Layout() {
                   </div>
                   <div className="flex flex-col">
                     <span className="text-zinc-300 font-medium">Service Area:</span>
-                    <span className="text-zinc-500 text-xs mt-1">50-Mile Radius from Jarrell, TX</span>
+                    <span className="text-zinc-500 text-xs mt-1">Temple to Austin, TX</span>
                   </div>
                 </li>
               </ul>
@@ -194,18 +194,18 @@ export default function Layout() {
                   <div className="absolute inset-0 border-2 border-transparent group-hover:border-red-500/50 transition-colors z-30 pointer-events-none rounded-lg"></div>
                   
                   {/* Transparent Red Service Radius Overlay */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45%] w-48 h-48 md:w-56 md:h-56 bg-red-600/30 rounded-full border border-red-500/50 z-20 pointer-events-none flex items-center justify-center">
-                    <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse shadow-[0_0_15px_rgba(239,68,68,1)]"></div>
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45%] w-72 h-72 md:w-80 md:h-80 bg-red-600/25 rounded-full border-2 border-red-500/50 z-20 pointer-events-none flex items-center justify-center shadow-[0_0_40px_rgba(239,68,68,0.3)]">
+                    <div className="w-4 h-4 bg-red-500 rounded-full animate-pulse shadow-[0_0_20px_rgba(239,68,68,1)]"></div>
                   </div>
 
                   <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d350000.00!2d-97.5855!3d30.8282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1710000000000!5m2!1sen!2sus&style=feature:all|element:labels.text.fill|color:0x8ec3b9&style=feature:all|element:labels.text.stroke|color:0x1a3646&style=feature:landscape|element:geometry|color:0x09090b&style=feature:poi|element:geometry|color:0x1c1c1c&style=feature:road|element:geometry|color:0x2c2c2c&style=feature:transit|element:geometry|color:0x2c2c2c&style=feature:water|element:geometry|color:0x0f0f0f"
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d220000.00!2d-97.58!3d30.72!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1710000000000!5m2!1sen!2sus&style=feature:all|element:labels.text.fill|color:0x8ec3b9&style=feature:all|element:labels.text.stroke|color:0x1a3646&style=feature:landscape|element:geometry|color:0x09090b&style=feature:poi|element:geometry|color:0x1c1c1c&style=feature:road|element:geometry|color:0x2c2c2c&style=feature:transit|element:geometry|color:0x2c2c2c&style=feature:water|element:geometry|color:0x0f0f0f"
                     className="absolute inset-0 w-full h-full filter grayscale-[50%] contrast-125 z-10 hover:grayscale-[20%] transition-all duration-500"
                     style={{ border: 0 }}
                     allowFullScreen={false}
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Service Area: 50-Mile Radius from Jarrell, TX"
+                    title="Service Area: Temple to Austin, TX"
                   ></iframe>
                 </div>
               </div>
