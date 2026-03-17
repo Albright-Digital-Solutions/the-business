@@ -1,11 +1,18 @@
 import express from 'express';
 import fs from 'fs';
-import Stripe from 'stripe';
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 app.use(express.json());
+
+// Lazy-load Stripe only when needed (avoids crash if env var is missing)
+let _stripe = null;
+async function getStripe() {
+  if (!_stripe) {
+    const Stripe = (await import('stripe')).default;
+    _stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+  }
+  return _stripe;
+}
 
 // JSON Database in /tmp for Vercel
 const dbPath = '/tmp/database.json';
@@ -81,6 +88,7 @@ app.post('/api/reserve', async (req, res) => {
     });
     saveDatabase();
 
+    const stripe = await getStripe();
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [{
