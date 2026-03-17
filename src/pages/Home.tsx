@@ -129,7 +129,7 @@ export default function Home() {
               {
                 icon: <Clock className="h-8 w-8 text-red-500" />,
                 title: "Service Concierge",
-                desc: "A professional, efficient team in clean branded clothing. We handle all the heavy lifting, sorting, and logistics with zero disruption."
+                desc: "A professional, efficient team with a clean, professional appearance. We handle all the heavy lifting, sorting, and logistics with zero disruption."
               }
             ].map((item, i) => (
               <motion.div 
@@ -207,8 +207,8 @@ export default function Home() {
               <div className="aspect-[4/5] md:aspect-square rounded-none overflow-hidden border border-white/10 relative group">
                 <div className="absolute inset-0 bg-red-600/20 mix-blend-overlay z-10 group-hover:bg-transparent transition-colors duration-500"></div>
                 <img 
-                  src="/images/mcj1.png" 
-                  alt="Professional Garage Recovery Team" 
+                  src="/images/garage_professional.png" 
+                  alt="Professional Garage Recovery Workspace" 
                   className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-700"
                 />
                 
@@ -218,7 +218,7 @@ export default function Home() {
                     <ShieldCheck className="w-8 h-8 text-red-500" />
                     <span className="font-black text-2xl text-white uppercase tracking-tight">Trusted Pros</span>
                   </div>
-                  <p className="text-zinc-300 font-medium">Clean, uniformed teams operating modern, pristine equipment.</p>
+                  <p className="text-zinc-300 font-medium">Clean, professional teams operating modern, pristine equipment.</p>
                 </div>
               </div>
               
