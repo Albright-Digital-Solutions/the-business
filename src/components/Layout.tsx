@@ -178,7 +178,7 @@ export default function Layout() {
                   </div>
                   <div className="flex flex-col">
                     <span className="text-zinc-300 font-medium">Service Area:</span>
-                    <span className="text-zinc-500 text-xs mt-1">Temple, TX to South Austin</span>
+                    <span className="text-zinc-500 text-xs mt-1">50-Mile Radius from Jarrell, TX</span>
                   </div>
                 </li>
               </ul>
@@ -199,13 +199,13 @@ export default function Layout() {
                   </div>
 
                   <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d515102.75330831617!2d-97.5878235!3d30.64831!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1710000000000!5m2!1sen!2sus&style=feature:all|element:labels.text.fill|color:0x8ec3b9&style=feature:all|element:labels.text.stroke|color:0x1a3646&style=feature:landscape|element:geometry|color:0x09090b&style=feature:poi|element:geometry|color:0x1c1c1c&style=feature:road|element:geometry|color:0x2c2c2c&style=feature:transit|element:geometry|color:0x2c2c2c&style=feature:water|element:geometry|color:0x0f0f0f"
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d350000.00!2d-97.5855!3d30.8282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1710000000000!5m2!1sen!2sus&style=feature:all|element:labels.text.fill|color:0x8ec3b9&style=feature:all|element:labels.text.stroke|color:0x1a3646&style=feature:landscape|element:geometry|color:0x09090b&style=feature:poi|element:geometry|color:0x1c1c1c&style=feature:road|element:geometry|color:0x2c2c2c&style=feature:transit|element:geometry|color:0x2c2c2c&style=feature:water|element:geometry|color:0x0f0f0f"
                     className="absolute inset-0 w-full h-full filter grayscale-[50%] contrast-125 z-10 hover:grayscale-[20%] transition-all duration-500"
                     style={{ border: 0 }}
                     allowFullScreen={false}
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Service Area: Temple to South Austin"
+                    title="Service Area: 50-Mile Radius from Jarrell, TX"
                   ></iframe>
                 </div>
               </div>

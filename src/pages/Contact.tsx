@@ -1,16 +1,43 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Calendar, Upload, Send, CheckCircle2 } from 'lucide-react';
+import { Upload, Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import Calendar from '../components/Calendar';
+import { validateServiceArea } from '../utils/geocoding';
 
 export default function Contact() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate form submission
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
+    // Grab the address field
+    const form = e.target as HTMLFormElement;
+    const addressInput = form.elements.namedItem('address') as HTMLInputElement | null;
+    
+    if (addressInput) {
+        const validation = await validateServiceArea(addressInput.value);
+        if (!validation.isValid) {
+            setErrorMessage(validation.error || "Invalid service area.");
+            setIsSubmitting(false);
+            return;
+        }
+    }
+
+    // Simulate API call for the estimate flow
     setTimeout(() => {
       setIsSubmitted(true);
-    }, 800);
+      setIsSubmitting(false);
+    }, 1500);
+  };
+
+  const handleSlotSelection = (date: string, slot: string) => {
+    navigate('/reserve-confirmation', { state: { date, slot } });
   };
 
   return (
@@ -25,18 +52,18 @@ export default function Contact() {
         >
           <div className="flex items-center justify-center gap-3 mb-6">
             <span className="h-px w-8 bg-red-600"></span>
-            <span className="text-red-500 font-bold tracking-[0.2em] uppercase text-sm">Booking</span>
+            <span className="text-red-500 font-bold tracking-[0.2em] uppercase text-sm">Booking & Estimates</span>
             <span className="h-px w-8 bg-red-600"></span>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter mb-6 uppercase">Schedule Recovery</h1>
+          <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter mb-6 uppercase">Get Started</h1>
           <p className="text-xl text-zinc-400 font-medium">
-            Ready to reclaim your space? Provide your details below to schedule your Garage Recovery Solutions service.
+            Schedule a guaranteed pick-up time with a deposit, or request a free estimate below.
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
-          {/* Calendar Placeholder */}
+          {/* Calendar Section */}
           <motion.div 
             className="lg:col-span-5"
             initial={{ opacity: 0, x: -30 }}
@@ -46,19 +73,13 @@ export default function Contact() {
             <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/10 p-10 h-full flex flex-col relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-red-600"></div>
               
-              <div className="flex items-center gap-4 mb-8">
-                <div className="p-3 bg-red-600/10 border border-red-600/20">
-                  <Calendar className="w-6 h-6 text-red-500" />
-                </div>
-                <h2 className="text-2xl font-black text-white uppercase tracking-tight">Select Date & Time</h2>
+              <div className="mb-8">
+                <h2 className="text-2xl font-black text-white uppercase tracking-tight mb-2">Schedule Pick-Up</h2>
+                <p className="text-sm text-zinc-400">Guaranteed service slot. Requires a $100 non-refundable deposit.</p>
               </div>
               
-              <div className="flex-grow flex items-center justify-center border-2 border-dashed border-white/10 bg-black/50 p-10 text-center hover:border-red-500/30 transition-colors">
-                <div>
-                  <Calendar className="w-16 h-16 text-zinc-700 mx-auto mb-6" />
-                  <p className="text-zinc-400 font-bold uppercase tracking-widest">[Calendar Plugin Placeholder]</p>
-                  <p className="text-sm text-zinc-600 mt-3 font-medium">Integration for scheduling API goes here.</p>
-                </div>
+              <div className="flex-grow flex flex-col items-center border-2 border-white/5 bg-black/50 p-6 text-center shadow-inner">
+                <Calendar onSelectSlot={handleSlotSelection} />
               </div>
               
               <div className="mt-10 pt-8 border-t border-white/10">
@@ -81,7 +102,10 @@ export default function Contact() {
               {/* Subtle red glow */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/5 blur-[80px] pointer-events-none"></div>
 
-              <h2 className="text-2xl font-black text-white mb-8 uppercase tracking-tight">Request a Quote / Information</h2>
+              <div className="mb-8">
+                <h2 className="text-2xl font-black text-white uppercase tracking-tight mb-2">Request Free Estimate</h2>
+                <p className="text-sm text-zinc-400">15 min or less over the phone. Same day pick-up not guaranteed.</p>
+              </div>
               
               {isSubmitted ? (
                 <motion.div 
@@ -97,7 +121,10 @@ export default function Contact() {
                     Thank you for contacting Garage Recovery Solutions. Our concierge team will review your details and contact you shortly to confirm your service.
                   </p>
                   <button 
-                    onClick={() => setIsSubmitted(false)}
+                    onClick={() => {
+                        setIsSubmitted(false);
+                        setErrorMessage(null);
+                    }}
                     className="mt-10 text-red-500 hover:text-red-400 font-bold uppercase tracking-widest text-sm transition-colors"
                   >
                     Submit another request
@@ -105,6 +132,12 @@ export default function Contact() {
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+                  {errorMessage && (
+                    <div className="p-4 bg-red-500/10 border border-red-500/30 flex items-start gap-3">
+                        <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                        <p className="text-red-400 text-sm font-medium">{errorMessage}</p>
+                    </div>
+                  )}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                     <div>
                       <label htmlFor="name" className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Full Name</label>
@@ -140,13 +173,13 @@ export default function Contact() {
                       />
                     </div>
                     <div>
-                      <label htmlFor="zip" className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Address / Zip Code</label>
+                      <label htmlFor="address" className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Full Address</label>
                       <input
                         type="text"
-                        id="zip"
+                        id="address"
                         required
                         className="w-full px-5 py-4 bg-zinc-900/50 border border-white/10 text-white focus:ring-1 focus:ring-red-500 focus:border-red-500 outline-none transition-all placeholder-zinc-700"
-                        placeholder="12345"
+                        placeholder="123 Main St, Austin, TX 78701"
                       />
                     </div>
                   </div>
@@ -188,9 +221,10 @@ export default function Contact() {
                   <div className="pt-6">
                     <button
                       type="submit"
-                      className="w-full flex justify-center items-center px-8 py-5 text-sm font-black uppercase tracking-widest text-white bg-red-600 hover:bg-red-700 transition-all duration-300 shadow-[0_0_20px_rgba(220,38,38,0.3)] hover:shadow-[0_0_30px_rgba(220,38,38,0.5)] transform hover:-translate-y-1"
+                      disabled={isSubmitting}
+                      className="w-full flex justify-center items-center px-8 py-5 text-sm font-black uppercase tracking-widest text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-[0_0_20px_rgba(220,38,38,0.3)] hover:shadow-[0_0_30px_rgba(220,38,38,0.5)] transform hover:-translate-y-1"
                     >
-                      Submit Request
+                      {isSubmitting ? 'Validating Area...' : 'Submit Request'}
                       <Send className="ml-3 h-5 w-5" />
                     </button>
                   </div>

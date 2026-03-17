@@ -10,6 +10,9 @@ import Services from './pages/Services';
 import Process from './pages/Process';
 import Contact from './pages/Contact';
 import Privacy from './pages/Privacy';
+import ReserveConfirmation from './pages/ReserveConfirmation';
+import PaymentSuccess from './pages/PaymentSuccess';
+import Admin from './pages/Admin';
 
 export default function App() {
   return (
@@ -21,6 +24,9 @@ export default function App() {
           <Route path="process" element={<Process />} />
           <Route path="contact" element={<Contact />} />
           <Route path="privacy" element={<Privacy />} />
+          <Route path="reserve-confirmation" element={<ReserveConfirmation />} />
+          <Route path="payment-success" element={<PaymentSuccess />} />
+          <Route path="admin" element={<Admin />} />
         </Route>
       </Routes>
     </BrowserRouter>
