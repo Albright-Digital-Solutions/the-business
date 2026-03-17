@@ -137,10 +137,4 @@ app.post('/api/reserve', async (req, res) => {
   }
 });
 
-if (!process.env.VERCEL) {
-  app.listen(port, () => {
-    console.log(`Backend API running at http://localhost:${port}`);
-  });
-}
-
 export default app;
