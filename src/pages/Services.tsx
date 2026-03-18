@@ -57,7 +57,7 @@ export default function Services() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <motion.div 
-          className="text-center max-w-3xl mx-auto mb-24"
+          className="text-center max-w-3xl mx-auto mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -71,6 +71,24 @@ export default function Services() {
           <p className="text-xl text-zinc-400 font-medium">
             Transparent, fixed pricing based on volume. No onsite estimates needed. We provide premium junk removal and efficient space solutions.
           </p>
+        </motion.div>
+
+        {/* Hero Image */}
+        <motion.div
+          className="relative mb-24 max-w-5xl mx-auto"
+          initial={{ opacity: 0, y: 30, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <div className="relative overflow-hidden border border-white/10 shadow-[0_0_60px_-15px_rgba(220,38,38,0.2)]">
+            <img
+              src="/clean-out-hero.png"
+              alt="Professional garage cleanout crew removing clutter and junk"
+              className="w-full h-[300px] sm:h-[400px] md:h-[500px] object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-600 to-transparent"></div>
+          </div>
         </motion.div>
 
         {/* Pricing Tiers */}

@@ -7,6 +7,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Services from './pages/Services';
+import CustomShelving from './pages/CustomShelving';
+import GarageDoorRepair from './pages/GarageDoorRepair';
+import AutoOpenerInstall from './pages/AutoOpenerInstall';
 import Process from './pages/Process';
 import Contact from './pages/Contact';
 import Privacy from './pages/Privacy';
@@ -21,6 +24,9 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="services" element={<Services />} />
+          <Route path="services/custom-shelving" element={<CustomShelving />} />
+          <Route path="services/garage-door-repair" element={<GarageDoorRepair />} />
+          <Route path="services/auto-opener-install" element={<AutoOpenerInstall />} />
           <Route path="process" element={<Process />} />
           <Route path="contact" element={<Contact />} />
           <Route path="privacy" element={<Privacy />} />

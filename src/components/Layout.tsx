@@ -1,11 +1,14 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Recycle, MapPin, Phone, Mail, Menu, X } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Recycle, MapPin, Phone, Mail, Menu, X, ChevronDown } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function Layout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
+  const servicesTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -16,12 +19,37 @@ export default function Layout() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMenuOpen(false);
+    setIsMobileServicesOpen(false);
+  }, [location.pathname]);
+
+  const serviceLinks = [
+    { name: 'Clean Out', path: '/services' },
+    { name: 'Custom Shelving & Storage', path: '/services/custom-shelving' },
+    { name: 'Garage Door Repair', path: '/services/garage-door-repair' },
+    { name: 'Auto Opener Install', path: '/services/auto-opener-install' },
+  ];
+
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Services & Pricing', path: '/services' },
     { name: 'The Process & Security', path: '/process' },
     { name: 'Schedule Recovery', path: '/contact' },
   ];
+
+  const isServicesActive = location.pathname.startsWith('/services');
+
+  const handleServicesEnter = () => {
+    if (servicesTimeoutRef.current) clearTimeout(servicesTimeoutRef.current);
+    setIsServicesOpen(true);
+  };
+
+  const handleServicesLeave = () => {
+    servicesTimeoutRef.current = setTimeout(() => {
+      setIsServicesOpen(false);
+    }, 150);
+  };
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans flex flex-col relative selection:bg-red-600 selection:text-white">
@@ -51,8 +79,86 @@ export default function Layout() {
             </div>
 
             {/* Desktop Nav */}
-            <nav className="hidden md:flex space-x-1">
-              {navLinks.map((link) => {
+            <nav className="hidden md:flex items-center space-x-1">
+              {/* Home Link */}
+              <Link
+                to="/"
+                className={`relative px-4 py-2 text-sm font-bold uppercase tracking-wider transition-colors duration-200 ${
+                  location.pathname === '/' ? 'text-white' : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                Home
+                {location.pathname === '/' && (
+                  <motion.div
+                    layoutId="nav-indicator"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.8)]"
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+              </Link>
+
+              {/* Services Dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={handleServicesEnter}
+                onMouseLeave={handleServicesLeave}
+              >
+                <button
+                  className={`relative px-4 py-2 text-sm font-bold uppercase tracking-wider transition-colors duration-200 flex items-center gap-1.5 ${
+                    isServicesActive ? 'text-white' : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  Services
+                  <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${isServicesOpen ? 'rotate-180' : ''}`} />
+                  {isServicesActive && (
+                    <motion.div
+                      layoutId="nav-indicator"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.8)]"
+                      initial={false}
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                </button>
+
+                <AnimatePresence>
+                  {isServicesOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                      transition={{ duration: 0.2, ease: 'easeOut' }}
+                      className="absolute top-full left-0 mt-2 w-64 bg-zinc-900/95 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/50 overflow-hidden"
+                      style={{ borderRadius: '0.5rem' }}
+                    >
+                      <div className="py-2">
+                        {serviceLinks.map((service) => {
+                          const isSubActive = location.pathname === service.path;
+                          return (
+                            <Link
+                              key={service.path}
+                              to={service.path}
+                              onClick={() => setIsServicesOpen(false)}
+                              className={`block px-5 py-3 text-sm font-bold uppercase tracking-wider transition-all duration-150 ${
+                                isSubActive
+                                  ? 'text-red-500 bg-red-600/10 border-l-2 border-red-600'
+                                  : 'text-zinc-400 hover:text-white hover:bg-white/5 border-l-2 border-transparent'
+                              }`}
+                            >
+                              {service.name}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                      {/* Bottom accent bar */}
+                      <div className="h-0.5 bg-gradient-to-r from-red-600 via-red-500 to-transparent"></div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Remaining Nav Links */}
+              {navLinks.filter(l => l.name !== 'Home').map((link) => {
                 const isActive = location.pathname === link.path;
                 return (
                   <Link
@@ -98,7 +204,67 @@ export default function Layout() {
               className="md:hidden bg-black/95 backdrop-blur-xl border-b border-white/10 overflow-hidden"
             >
               <div className="pt-2 pb-6 space-y-1 px-4">
-                {navLinks.map((link) => {
+                {/* Home */}
+                <Link
+                  to="/"
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`block px-4 py-3 rounded-lg text-base font-bold uppercase tracking-wider ${
+                    location.pathname === '/'
+                      ? 'bg-red-600/10 text-red-500 border border-red-600/20'
+                      : 'text-zinc-400 hover:bg-white/5 hover:text-white'
+                  }`}
+                >
+                  Home
+                </Link>
+
+                {/* Mobile Services Accordion */}
+                <div>
+                  <button
+                    onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
+                    className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-base font-bold uppercase tracking-wider ${
+                      isServicesActive
+                        ? 'bg-red-600/10 text-red-500 border border-red-600/20'
+                        : 'text-zinc-400 hover:bg-white/5 hover:text-white'
+                    }`}
+                  >
+                    Services
+                    <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isMobileServicesOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  <AnimatePresence>
+                    {isMobileServicesOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pl-4 mt-1 space-y-1 border-l-2 border-red-600/30 ml-4">
+                          {serviceLinks.map((service) => {
+                            const isSubActive = location.pathname === service.path;
+                            return (
+                              <Link
+                                key={service.path}
+                                to={service.path}
+                                onClick={() => setIsMenuOpen(false)}
+                                className={`block px-4 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider ${
+                                  isSubActive
+                                    ? 'text-red-500 bg-red-600/10'
+                                    : 'text-zinc-500 hover:text-white hover:bg-white/5'
+                                }`}
+                              >
+                                {service.name}
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Remaining Links */}
+                {navLinks.filter(l => l.name !== 'Home').map((link) => {
                   const isActive = location.pathname === link.path;
                   return (
                     <Link

@@ -95,10 +95,9 @@ export default function Process() {
             <div className="relative h-80 lg:h-auto overflow-hidden">
               <div className="absolute inset-0 bg-red-900/20 mix-blend-multiply z-10"></div>
               <img 
-                src="https://picsum.photos/seed/security-shred-dark/800/800?grayscale" 
-                alt="Secure Document Shredding" 
+                src="/cross-shredder.png" 
+                alt="Secure Document Shredding with Cross-Cut Shredder" 
                 className="absolute inset-0 w-full h-full object-cover opacity-60 transform group-hover:scale-105 transition-transform duration-1000"
-                referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-l from-black via-black/50 to-transparent z-20"></div>
             </div>

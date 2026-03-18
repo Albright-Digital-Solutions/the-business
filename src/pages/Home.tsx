@@ -151,6 +151,103 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Our Services - Flip Cards */}
+      <section className="py-24 relative border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            className="text-center max-w-3xl mx-auto mb-20"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <span className="h-px w-8 bg-red-600"></span>
+              <span className="text-red-500 font-bold tracking-[0.2em] uppercase text-sm">What We Do</span>
+              <span className="h-px w-8 bg-red-600"></span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tighter uppercase">Our Services</h2>
+            <p className="text-lg text-zinc-400 font-medium">
+              From cleanouts to installations — we offer a full range of garage solutions to reclaim and upgrade your space.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                title: 'Clean Out',
+                image: '/clean-out-hero.png',
+                description: 'Complete garage cleanout with eco-friendly sorting, recycling, and disposal. Fixed pricing by garage size.',
+                path: '/services',
+              },
+              {
+                title: 'Custom Shelving & Storage',
+                image: '/custom-shelving-hero.png',
+                description: 'Precision-measured, heavy-duty shelving systems designed and installed to maximize every inch of your garage.',
+                path: '/services/custom-shelving',
+              },
+              {
+                title: 'Garage Door Repair',
+                image: '/garage-door-repair-hero.png',
+                description: 'Springs, cables, panels, tracks — we repair and replace all garage door components with quality parts.',
+                path: '/services/garage-door-repair',
+              },
+              {
+                title: 'Auto Opener Install',
+                image: '/auto-opener-hero.png',
+                description: 'Modern automatic openers with smart connectivity, safety sensors, and whisper-quiet operation.',
+                path: '/services/auto-opener-install',
+              },
+            ].map((service, index) => (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="flip-card h-[400px] cursor-pointer"
+              >
+                <div className="flip-card-inner relative w-full h-full">
+                  {/* Front */}
+                  <div className="flip-card-front absolute inset-0 w-full h-full">
+                    <div className="relative w-full h-full border border-white/10 overflow-hidden group">
+                      <img
+                        src={service.image}
+                        alt={service.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                      <div className="absolute bottom-0 left-0 w-full p-6">
+                        <h3 className="text-xl font-black text-white uppercase tracking-tight">{service.title}</h3>
+                        <div className="mt-2 h-0.5 w-12 bg-red-600"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Back */}
+                  <div className="flip-card-back absolute inset-0 w-full h-full">
+                    <div className="w-full h-full bg-zinc-900 border border-red-600/30 p-8 flex flex-col justify-center items-center text-center relative overflow-hidden">
+                      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-600 to-transparent"></div>
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.08)_0%,transparent_70%)]"></div>
+                      <div className="relative z-10">
+                        <h3 className="text-xl font-black text-white uppercase tracking-tight mb-4">{service.title}</h3>
+                        <p className="text-zinc-400 leading-relaxed mb-8">{service.description}</p>
+                        <Link
+                          to={service.path}
+                          className="inline-flex items-center bg-red-600 text-white py-3 px-6 font-bold uppercase tracking-widest text-sm hover:bg-red-700 transition-all duration-300 shadow-[0_0_15px_rgba(220,38,38,0.4)]"
+                        >
+                          Learn More <ChevronRight className="ml-2 h-4 w-4" />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* The Garage Recovery Difference */}
       <section className="py-24 bg-black relative border-t border-white/5 overflow-hidden">
         {/* Decorative background lines */}

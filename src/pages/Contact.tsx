@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'motion/react';
-import { Upload, Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Upload, Send, CheckCircle2, AlertCircle, X, Info } from 'lucide-react';
 import Calendar from '../components/Calendar';
 import { validateServiceArea } from '../utils/geocoding';
 
@@ -9,7 +9,11 @@ export default function Contact() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState('');
+  const [showCustomPopup, setShowCustomPopup] = useState(false);
   const navigate = useNavigate();
+
+  const isCustomSpace = selectedSize === 'other';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,8 +35,12 @@ export default function Contact() {
 
     // Simulate API call for the estimate flow
     setTimeout(() => {
-      setIsSubmitted(true);
       setIsSubmitting(false);
+      if (isCustomSpace) {
+        setShowCustomPopup(true);
+      } else {
+        setIsSubmitted(true);
+      }
     }, 1500);
   };
 
@@ -71,15 +79,36 @@ export default function Contact() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/10 p-10 h-full flex flex-col relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-1 bg-red-600"></div>
+              <div className={`absolute top-0 left-0 w-full h-1 ${isCustomSpace ? 'bg-zinc-600' : 'bg-red-600'} transition-colors duration-300`}></div>
               
               <div className="mb-8">
                 <h2 className="text-2xl font-black text-white uppercase tracking-tight mb-2">Schedule Pick-Up</h2>
                 <p className="text-sm text-zinc-400">Guaranteed service slot. Requires a $100 non-refundable deposit.</p>
               </div>
               
-              <div className="flex-grow flex flex-col items-center border-2 border-white/5 bg-black/50 p-6 text-center shadow-inner">
+              <div className="flex-grow flex flex-col items-center border-2 border-white/5 bg-black/50 p-6 text-center shadow-inner relative">
                 <Calendar onSelectSlot={handleSlotSelection} />
+                
+                {/* Disabled overlay when "Other / Custom Space" is selected */}
+                <AnimatePresence>
+                  {isCustomSpace && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="absolute inset-0 z-20 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center p-8"
+                    >
+                      <div className="p-4 bg-zinc-800/80 border border-white/10 rounded-lg max-w-sm text-center">
+                        <Info className="h-10 w-10 text-red-500 mx-auto mb-4" />
+                        <h3 className="text-lg font-black text-white uppercase tracking-tight mb-3">Calendar Unavailable</h3>
+                        <p className="text-sm text-zinc-400 leading-relaxed">
+                          Custom spaces require a personalized assessment. Please submit the estimate form and a recovery expert will contact you to schedule.
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
               
               <div className="mt-10 pt-8 border-t border-white/10">
@@ -124,6 +153,7 @@ export default function Contact() {
                     onClick={() => {
                         setIsSubmitted(false);
                         setErrorMessage(null);
+                        setSelectedSize('');
                     }}
                     className="mt-10 text-red-500 hover:text-red-400 font-bold uppercase tracking-widest text-sm transition-colors"
                   >
@@ -189,7 +219,8 @@ export default function Contact() {
                     <select
                       id="size"
                       required
-                      defaultValue=""
+                      value={selectedSize}
+                      onChange={(e) => setSelectedSize(e.target.value)}
                       className="w-full px-5 py-4 bg-zinc-900/50 border border-white/10 text-white focus:ring-1 focus:ring-red-500 focus:border-red-500 outline-none transition-all appearance-none"
                     >
                       <option value="" disabled className="text-zinc-500">Select a size...</option>
@@ -235,6 +266,62 @@ export default function Contact() {
 
         </div>
       </div>
+
+      {/* Custom Space Popup Modal */}
+      <AnimatePresence>
+        {showCustomPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center px-4"
+          >
+            {/* Backdrop */}
+            <div 
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm" 
+              onClick={() => setShowCustomPopup(false)}
+            ></div>
+            
+            {/* Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              className="relative bg-zinc-900 border border-white/10 p-10 max-w-lg w-full text-center shadow-2xl shadow-black/50"
+            >
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-600 to-transparent"></div>
+              
+              <button
+                onClick={() => setShowCustomPopup(false)}
+                className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+              
+              <div className="w-20 h-20 bg-red-600/10 border border-red-600/20 flex items-center justify-center mb-8 mx-auto">
+                <CheckCircle2 className="w-10 h-10 text-red-500" />
+              </div>
+              
+              <h3 className="text-2xl font-black text-white mb-4 uppercase tracking-tight">Request Received</h3>
+              <p className="text-zinc-400 text-lg leading-relaxed mb-8">
+                We need more information before we are able to schedule a pickup. A <span className="text-red-500 font-bold">recovery expert</span> will be contacting you soon.
+              </p>
+              
+              <button
+                onClick={() => {
+                  setShowCustomPopup(false);
+                  setSelectedSize('');
+                  setIsSubmitted(false);
+                }}
+                className="inline-flex items-center bg-red-600 text-white py-3 px-8 font-bold uppercase tracking-widest text-sm hover:bg-red-700 transition-all duration-300 shadow-[0_0_15px_rgba(220,38,38,0.4)]"
+              >
+                Got It
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
