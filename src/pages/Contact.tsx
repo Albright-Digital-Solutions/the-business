@@ -33,15 +33,42 @@ export default function Contact() {
         }
     }
 
-    // Simulate API call for the estimate flow
-    setTimeout(() => {
-      setIsSubmitting(false);
+    // Collect form data
+    const nameVal = (form.elements.namedItem('name') as HTMLInputElement).value;
+    const phoneVal = (form.elements.namedItem('phone') as HTMLInputElement).value;
+    const emailVal = (form.elements.namedItem('email') as HTMLInputElement).value;
+    const addressVal = (form.elements.namedItem('address') as HTMLInputElement).value;
+    const sizeVal = (form.elements.namedItem('size') as HTMLSelectElement).value;
+
+    try {
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: nameVal,
+          email: emailVal,
+          phone: phoneVal,
+          address: addressVal,
+          garageSize: sizeVal,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to send request.');
+      }
+
       if (isCustomSpace) {
         setShowCustomPopup(true);
       } else {
         setIsSubmitted(true);
       }
-    }, 1500);
+    } catch (err: any) {
+      setErrorMessage(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleSlotSelection = (date: string, slot: string) => {
@@ -255,7 +282,7 @@ export default function Contact() {
                       disabled={isSubmitting}
                       className="w-full flex justify-center items-center px-8 py-5 text-sm font-black uppercase tracking-widest text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-[0_0_20px_rgba(220,38,38,0.3)] hover:shadow-[0_0_30px_rgba(220,38,38,0.5)] transform hover:-translate-y-1"
                     >
-                      {isSubmitting ? 'Validating Area...' : 'Submit Request'}
+                      {isSubmitting ? 'Sending...' : 'Submit Request'}
                       <Send className="ml-3 h-5 w-5" />
                     </button>
                   </div>
