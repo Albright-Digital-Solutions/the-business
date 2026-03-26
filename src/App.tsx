@@ -24,7 +24,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="services" element={<Services />} />
+          <Route path="pricing" element={<Services />} />
           {/* Existing dedicated service pages (kept as aliases) */}
           <Route path="services/custom-shelving" element={<CustomShelving />} />
           <Route path="services/garage-door-repair" element={<GarageDoorRepair />} />

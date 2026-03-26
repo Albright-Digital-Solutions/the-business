@@ -158,7 +158,7 @@ export default function ServicePage() {
   }, [service]);
 
   if (!service) {
-    return <Navigate to="/services" replace />;
+    return <Navigate to="/pricing" replace />;
   }
 
   return (

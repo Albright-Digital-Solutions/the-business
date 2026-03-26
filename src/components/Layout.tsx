@@ -38,12 +38,12 @@ export default function Layout() {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Pricing', path: '/services' },
+    { name: 'Pricing', path: '/pricing' },
     { name: 'The Process & Security', path: '/process' },
     { name: 'Schedule Recovery', path: '/contact' },
   ];
 
-  const isServicesActive = location.pathname.startsWith('/services');
+  const isServicesActive = location.pathname.startsWith('/services') || location.pathname === '/pricing';
 
   const handleServicesEnter = () => {
     if (servicesTimeoutRef.current) clearTimeout(servicesTimeoutRef.current);

@@ -82,7 +82,7 @@ export default function Home() {
                 </span>
               </Link>
               <Link
-                to="/services"
+                to="/pricing"
                 className="group inline-flex justify-center items-center px-8 py-4 text-sm font-bold uppercase tracking-widest text-white border border-white/20 hover:border-red-500 hover:bg-red-500/10 transition-all duration-300 rounded-sm"
               >
                 View Standard Pricing
