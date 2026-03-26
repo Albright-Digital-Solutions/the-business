@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, email, phone, address, garageSize, message } = req.body;
+  const { name, email, phone, address, garageSize, message, attachments } = req.body;
 
   // Validate required fields
   if (!name || !email || !phone || !address || !garageSize) {
@@ -80,6 +80,12 @@ export default async function handler(req, res) {
         reply_to: email,
         subject: `New Estimate Request from ${name}`,
         html: htmlBody,
+        ...(attachments && attachments.length > 0 && {
+          attachments: attachments.map(a => ({
+            filename: a.filename,
+            content: a.content,
+          })),
+        }),
       }),
     });
 

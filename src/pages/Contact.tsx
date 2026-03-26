@@ -5,6 +5,19 @@ import { Upload, Send, CheckCircle2, AlertCircle, X, Info } from 'lucide-react';
 import Calendar from '../components/Calendar';
 import { validateServiceArea } from '../utils/geocoding';
 
+// Convert a File to a base64 string (without the data URI prefix)
+function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      resolve(result.split(',')[1]); // strip "data:...;base64,"
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 export default function Contact() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,6 +53,16 @@ export default function Contact() {
     const addressVal = (form.elements.namedItem('address') as HTMLInputElement).value;
     const sizeVal = (form.elements.namedItem('size') as HTMLSelectElement).value;
 
+    // Collect file attachments as base64
+    const fileInput = form.elements.namedItem('file-upload') as HTMLInputElement;
+    const attachments: { filename: string; content: string }[] = [];
+    if (fileInput?.files) {
+      for (const file of Array.from(fileInput.files)) {
+        const content = await fileToBase64(file);
+        attachments.push({ filename: file.name, content });
+      }
+    }
+
     try {
       const res = await fetch('/api/send-email', {
         method: 'POST',
@@ -50,6 +73,7 @@ export default function Contact() {
           phone: phoneVal,
           address: addressVal,
           garageSize: sizeVal,
+          attachments,
         }),
       });
 
