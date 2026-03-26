@@ -172,19 +172,19 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                title: 'Clean Out',
+                title: 'Full Cleanout',
                 image: '/clean-out-hero.png',
                 description: 'Complete garage cleanout with eco-friendly sorting, recycling, and disposal. Fixed pricing by garage size.',
-                path: '/services',
+                path: '/services/full-garage-cleanout',
               },
               {
                 title: 'Custom Shelving & Storage',
                 image: '/custom-shelving-hero.png',
                 description: 'Precision-measured, heavy-duty shelving systems designed and installed to maximize every inch of your garage.',
-                path: '/services/custom-shelving',
+                path: '/services/custom-garage-shelving',
               },
               {
                 title: 'Garage Door Repair',
@@ -193,10 +193,22 @@ export default function Home() {
                 path: '/services/garage-door-repair',
               },
               {
-                title: 'Auto Opener Install',
+                title: 'Opener Installation',
                 image: '/auto-opener-hero.png',
                 description: 'Modern automatic openers with smart connectivity, safety sensors, and whisper-quiet operation.',
-                path: '/services/auto-opener-install',
+                path: '/services/garage-door-opener-installation',
+              },
+              {
+                title: 'Man Cave Design',
+                image: '/images/garage_corvette.png',
+                description: 'Full garage-to-man-cave conversion with HVAC, flooring, entertainment systems, and premium finishes.',
+                path: '/services/garage-man-cave-design',
+              },
+              {
+                title: 'Home Gym Conversion',
+                image: '/images/garage_gym.png',
+                description: 'Rubber flooring, equipment layout, ventilation, mirrors, and climate control for your workout space.',
+                path: '/services/garage-home-gym-conversion',
               },
             ].map((service, index) => (
               <motion.div

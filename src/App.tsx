@@ -5,6 +5,7 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
+import ServicePage from './components/ServicePage';
 import Home from './pages/Home';
 import Services from './pages/Services';
 import CustomShelving from './pages/CustomShelving';
@@ -24,9 +25,12 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="services" element={<Services />} />
+          {/* Existing dedicated service pages (kept as aliases) */}
           <Route path="services/custom-shelving" element={<CustomShelving />} />
           <Route path="services/garage-door-repair" element={<GarageDoorRepair />} />
           <Route path="services/auto-opener-install" element={<AutoOpenerInstall />} />
+          {/* Dynamic service entity pages */}
+          <Route path="services/:slug" element={<ServicePage />} />
           <Route path="process" element={<Process />} />
           <Route path="contact" element={<Contact />} />
           <Route path="privacy" element={<Privacy />} />
@@ -38,3 +42,4 @@ export default function App() {
     </BrowserRouter>
   );
 }
+

@@ -2,6 +2,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Recycle, MapPin, Phone, Mail, Menu, X, ChevronDown } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
+import { services, SERVICE_CATEGORIES } from '../data/serviceData';
 
 export default function Layout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,15 +26,19 @@ export default function Layout() {
     setIsMobileServicesOpen(false);
   }, [location.pathname]);
 
-  const serviceLinks = [
-    { name: 'Clean Out', path: '/services' },
-    { name: 'Custom Shelving & Storage', path: '/services/custom-shelving' },
-    { name: 'Garage Door Repair', path: '/services/garage-door-repair' },
-    { name: 'Auto Opener Install', path: '/services/auto-opener-install' },
-  ];
+  // Build category-based service links from data
+  const categoryOrder: (keyof typeof SERVICE_CATEGORIES)[] = ['cleanout', 'storage', 'doors', 'conversions', 'specialty'];
+  const serviceNav = categoryOrder.map((cat) => ({
+    category: SERVICE_CATEGORIES[cat],
+    items: services.filter((s) => s.category === cat).map((s) => ({
+      name: s.serviceType,
+      path: `/services/${s.slug}`,
+    })),
+  }));
 
   const navLinks = [
     { name: 'Home', path: '/' },
+    { name: 'Pricing', path: '/services' },
     { name: 'The Process & Security', path: '/process' },
     { name: 'Schedule Recovery', path: '/contact' },
   ];
@@ -128,29 +133,33 @@ export default function Layout() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.96 }}
                       transition={{ duration: 0.2, ease: 'easeOut' }}
-                      className="absolute top-full left-0 mt-2 w-64 bg-zinc-900/95 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/50 overflow-hidden"
-                      style={{ borderRadius: '0.5rem' }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-zinc-900/95 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/50 overflow-hidden"
+                      style={{ borderRadius: '0.5rem', width: 'max-content', maxWidth: '90vw' }}
                     >
-                      <div className="py-2">
-                        {serviceLinks.map((service) => {
-                          const isSubActive = location.pathname === service.path;
-                          return (
-                            <Link
-                              key={service.path}
-                              to={service.path}
-                              onClick={() => setIsServicesOpen(false)}
-                              className={`block px-5 py-3 text-sm font-bold uppercase tracking-wider transition-all duration-150 ${
-                                isSubActive
-                                  ? 'text-red-500 bg-red-600/10 border-l-2 border-red-600'
-                                  : 'text-zinc-400 hover:text-white hover:bg-white/5 border-l-2 border-transparent'
-                              }`}
-                            >
-                              {service.name}
-                            </Link>
-                          );
-                        })}
+                      <div className="grid grid-cols-2 lg:grid-cols-3 gap-0 p-4" style={{ minWidth: '480px' }}>
+                        {serviceNav.map((group) => (
+                          <div key={group.category} className="px-3 py-2">
+                            <h4 className="text-[10px] font-black text-red-500 uppercase tracking-[0.2em] mb-3 px-2">{group.category}</h4>
+                            {group.items.map((service) => {
+                              const isSubActive = location.pathname === service.path;
+                              return (
+                                <Link
+                                  key={service.path}
+                                  to={service.path}
+                                  onClick={() => setIsServicesOpen(false)}
+                                  className={`block px-2 py-2 text-xs font-bold uppercase tracking-wider transition-all duration-150 rounded ${
+                                    isSubActive
+                                      ? 'text-red-500 bg-red-600/10'
+                                      : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                                  }`}
+                                >
+                                  {service.name}
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        ))}
                       </div>
-                      {/* Bottom accent bar */}
                       <div className="h-0.5 bg-gradient-to-r from-red-600 via-red-500 to-transparent"></div>
                     </motion.div>
                   )}
@@ -239,24 +248,29 @@ export default function Layout() {
                         transition={{ duration: 0.2 }}
                         className="overflow-hidden"
                       >
-                        <div className="pl-4 mt-1 space-y-1 border-l-2 border-red-600/30 ml-4">
-                          {serviceLinks.map((service) => {
-                            const isSubActive = location.pathname === service.path;
-                            return (
-                              <Link
-                                key={service.path}
-                                to={service.path}
-                                onClick={() => setIsMenuOpen(false)}
-                                className={`block px-4 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider ${
-                                  isSubActive
-                                    ? 'text-red-500 bg-red-600/10'
-                                    : 'text-zinc-500 hover:text-white hover:bg-white/5'
-                                }`}
-                              >
-                                {service.name}
-                              </Link>
-                            );
-                          })}
+                        <div className="pl-4 mt-1 space-y-3 border-l-2 border-red-600/30 ml-4">
+                          {serviceNav.map((group) => (
+                            <div key={group.category}>
+                              <h4 className="text-[10px] font-black text-red-500 uppercase tracking-[0.2em] mb-1 px-4 pt-2">{group.category}</h4>
+                              {group.items.map((service) => {
+                                const isSubActive = location.pathname === service.path;
+                                return (
+                                  <Link
+                                    key={service.path}
+                                    to={service.path}
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className={`block px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider ${
+                                      isSubActive
+                                        ? 'text-red-500 bg-red-600/10'
+                                        : 'text-zinc-500 hover:text-white hover:bg-white/5'
+                                    }`}
+                                  >
+                                    {service.name}
+                                  </Link>
+                                );
+                              })}
+                            </div>
+                          ))}
                         </div>
                       </motion.div>
                     )}
